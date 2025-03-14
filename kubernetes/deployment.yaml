@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hexview
+  labels:
+    app: hexview
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hexview
+  template:
+    metadata:
+      labels:
+        app: hexview
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8000"
+    spec:
+      containers:
+      - name: hexview
+        image: hexview:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        - name: TARGET_URL_PREFIX
+          value: "https://meshview.bayme.sh/packet_list/"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: "0.2"
+            memory: "128Mi"
+          requests:
+            cpu: "0.1"
+            memory: "64Mi"
