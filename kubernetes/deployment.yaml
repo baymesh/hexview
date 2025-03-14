@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: hexview
-        image: hexview:latest
+        image: ghcr.io/baymesh/hexview:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
