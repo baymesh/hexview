@@ -18,6 +18,8 @@ spec:
         prometheus.io/path: "/metrics"
         prometheus.io/port: "8000"
     spec:
+      imagePullSecrets:
+      - name: ghcr-secret
       containers:
       - name: hexview
         image: ghcr.io/baymesh/hexview:latest
